@@ -18,6 +18,10 @@ export async function POST(req: NextRequest) {
     const data = parsed.data
     const supabase = createServerClient()
 
+    if (!supabase) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+    }
+
     // Store in Supabase
     const { error: dbError } = await supabase.from('appointments').insert({
       name: data.name,
@@ -57,6 +61,11 @@ export async function GET(req: NextRequest) {
   }
 
   const supabase = createServerClient()
+  
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
+
   const { data, error } = await supabase
     .from('appointments')
     .select('*')

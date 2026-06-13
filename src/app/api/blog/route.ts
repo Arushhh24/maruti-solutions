@@ -18,6 +18,11 @@ function requireAdmin(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   const supabase = createServerClient()
+  
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
+  
   const isAdmin = requireAdmin(req)
 
   const query = supabase
@@ -44,6 +49,11 @@ export async function POST(req: NextRequest) {
   }
 
   const supabase = createServerClient()
+  
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
+  
   const { data, error } = await supabase
     .from('blog_posts')
     .insert(parsed.data)
@@ -64,6 +74,11 @@ export async function PATCH(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 })
 
   const supabase = createServerClient()
+  
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
+  
   const { data, error } = await supabase
     .from('blog_posts')
     .update(updates)
@@ -85,6 +100,11 @@ export async function DELETE(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 })
 
   const supabase = createServerClient()
+  
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
+  
   const { error } = await supabase.from('blog_posts').delete().eq('id', id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ success: true })

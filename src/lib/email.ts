@@ -15,6 +15,7 @@ export async function sendAppointmentEmail(data: {
   time: string
   message?: string
 }) {
+  if (!resend) return
   // Notify admin
   await resend.emails.send({
     from: FROM_EMAIL,
@@ -38,8 +39,7 @@ export async function sendAppointmentEmail(data: {
       </div>
     `,
   })
-
-  
+}
 
 export async function sendProjectEmail(data: {
   name: string
@@ -47,6 +47,7 @@ export async function sendProjectEmail(data: {
   service: string
   description: string
 }) {
+  if (!resend) return
   await resend.emails.send({
     from: FROM_EMAIL,
     to: ADMIN_EMAIL,
@@ -85,6 +86,7 @@ export async function sendLeadEmail(data: {
   company?: string
   message: string
 }) {
+  if (!resend) return
   await resend.emails.send({
     from: FROM_EMAIL,
     to: ADMIN_EMAIL,
